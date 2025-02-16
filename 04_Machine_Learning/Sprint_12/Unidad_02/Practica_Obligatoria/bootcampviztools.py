@@ -222,6 +222,25 @@ def plot_grouped_histograms(df, cat_col, num_col, group_size):
         plt.ylabel('Frequency')
         plt.legend()
         plt.show()
+        
+        
+def plot_grouped_kde(df, cat_col, num_col, group_size):
+    unique_cats = df[cat_col].unique()
+    num_cats = len(unique_cats)
+
+    for i in range(0, num_cats, group_size):
+        subset_cats = unique_cats[i:i+group_size]
+        subset_df = df[df[cat_col].isin(subset_cats)]
+        
+        plt.figure(figsize=(10, 6))
+        for cat in subset_cats:
+            sns.kdeplot(subset_df[subset_df[cat_col] == cat][num_col], hue_norm=[0,1], label=str(cat))
+        
+        plt.title(f'KDE of {num_col} for {cat_col} (Group {i//group_size + 1})')
+        plt.xlabel(num_col)
+        plt.ylabel('Rel. Freq.')
+        plt.legend()
+        plt.show()
 
 
 
